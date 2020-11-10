@@ -1,0 +1,53 @@
+let_wt:
+  McMa19:
+    c: 0.055
+mcnamara:
+  McNa15:
+    p0: 0.999064
+    p1: 0.35605
+    p2: 1.1012
+    p4: 0.0038703
+mm_model:
+  EAKS19:
+    dam_yield:
+      a1: 0.1966
+      b1: 0.008
+      c1: 0.0736
+      d1: 1.149
+      e1: 24.1
+      f1: 0.0004879
+      g1: 0.00284
+      h1: 0.0513
+      pho_mis: 0.042770764
+      pho_res: 1.72601618
+    summary: NEED TO FILL THESE IN AT SOME POINT
+  NH19:
+    init_dam:
+      a1: -0.00243873
+      a2: -0.000676722
+      a3: 0.00129442
+      a4: 0.00347432
+      b1: 0.398052
+      b2: 0.208652
+      b3: 0.316023
+      b4: 0.141311
+      c1: 16.4117
+      c2: 2.37577
+      c3: 4.85635
+      c4: 1.56121
+      pho_comp: 9.6328
+      pho_simp: 15.3328
+    summary: NEED TO FILL THESE IN AT SOME POINT
+  YQ20:
+    dam_yield:
+      a1: 0.0
+      b1: 0.008
+      c1: 0.0736
+      d1: 1.149
+      e1: 24.1
+      f1: 0.0004879
+      g1: 0.00284
+      h1: 0.0513
+      pho_mis: 0.042770764
+      pho_res: 1.72601618
+    summary: NEED TO FILL THESE IN AT SOME POINT
