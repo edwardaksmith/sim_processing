@@ -1,6 +1,6 @@
 from __future__ import division
 
-# Definition of trackvis header pyd_rs_data:
+# Definition of trackvis header structure:
 # http://www.trackvis.org/docs/?subsect=fileformat
 
 import os
@@ -27,10 +27,10 @@ from .utils import peek_next
 MAX_NB_NAMED_SCALARS_PER_POINT = 10
 MAX_NB_NAMED_PROPERTIES_PER_STREAMLINE = 10
 
-# Version 2 adds a 4x4 tar_matrix giving the affine transformation going
-# from voxel coordinates in the referenced 3D voxel tar_matrix, to xyz
+# Version 2 adds a 4x4 matrix giving the affine transformation going
+# from voxel coordinates in the referenced 3D voxel matrix, to xyz
 # coordinates (axes L->R, P->A, I->S). If (0 based) value [3, 3] from
-# this tar_matrix is 0, this means the tar_matrix is not recorded.
+# this matrix is 0, this means the matrix is not recorded.
 # See http://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
 header_2_dtd = [(Field.MAGIC_NUMBER, 'S6'),
                 (Field.DIMENSIONS, 'h', 3),
@@ -68,7 +68,7 @@ def get_affine_trackvis_to_rasmm(header):
     The streamlines in a trackvis file are in 'voxelmm' space, where the
     coordinates refer to the corner of the voxel.
 
-    Compute the affine tar_matrix that will bring them back to RAS+ mm space, where
+    Compute the affine matrix that will bring them back to RAS+ mm space, where
     the coordinates refer to the center of the voxel.
 
     Parameters
@@ -82,10 +82,10 @@ def get_affine_trackvis_to_rasmm(header):
         Affine array mapping coordinates in 'voxelmm' space to RAS+ mm space.
     """
     # TRK's streamlines are in 'voxelmm' space, we will compute the
-    # affine tar_matrix that will bring them back to RAS+ and mm space.
+    # affine matrix that will bring them back to RAS+ and mm space.
     affine = np.eye(4)
 
-    # The affine tar_matrix found in the TRK header requires the points to
+    # The affine matrix found in the TRK header requires the points to
     # be in the voxel space.
     # voxelmm -> voxel
     scale = np.eye(4)
@@ -574,7 +574,7 @@ class TrkFile(TractogramFile):
                                                  TrkFile.HEADER_SIZE))
 
             if header_rec['version'] == 1:
-                # There is no 4x4 tar_matrix for voxel to RAS transformation.
+                # There is no 4x4 matrix for voxel to RAS transformation.
                 header_rec[Field.VOXEL_TO_RASMM] = np.zeros((4, 4))
             elif header_rec['version'] == 2:
                 pass  # Nothing more to do.
@@ -586,7 +586,7 @@ class TrkFile(TractogramFile):
             header = dict(zip(header_rec.dtype.names, header_rec[0]))
             header[Field.ENDIANNESS] = endianness
 
-            # If vox_to_ras[3][3] is 0, it means the tar_matrix is not recorded.
+            # If vox_to_ras[3][3] is 0, it means the matrix is not recorded.
             if header[Field.VOXEL_TO_RASMM][3][3] == 0:
                 header[Field.VOXEL_TO_RASMM] = np.eye(4, dtype=np.float32)
                 warnings.warn(("Field 'vox_to_ras' in the TRK's header was"

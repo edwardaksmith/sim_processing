@@ -297,7 +297,7 @@ def test_orthogonal():
     R = dw.rotation_matrix
     assert_true(np.allclose(np.eye(3), np.dot(R, R.T), atol=1e-6))
 
-    # Test the threshold for rotation tar_matrix orthogonality
+    # Test the threshold for rotation matrix orthogonality
     d = {}
     d['ImageOrientationPatient'] = [0, 1, 0, 1, 0, 0]
     dw = didw.wrapper_from_data(d)
@@ -312,7 +312,7 @@ def test_orthogonal():
 
 @dicom_test
 def test_rotation_matrix():
-    # Test rotation tar_matrix and slice normal
+    # Test rotation matrix and slice normal
     d = {}
     d['ImageOrientationPatient'] = [0, 1, 0, 1, 0, 0]
     dw = didw.wrapper_from_data(d)
@@ -367,7 +367,7 @@ def fake_frames(seq_name, field_name, value_seq):
     Returns
     -------
     frame_seq : length N list
-        each element in list is obj.<seq_name>[0].<str_field_name> =
+        each element in list is obj.<seq_name>[0].<field_name> =
         value_seq[n] for n in range(N)
     """
     class Fake(object):

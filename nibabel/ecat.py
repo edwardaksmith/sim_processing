@@ -11,25 +11,25 @@
 An ECAT format image consists of:
 
 * a *main header*;
-* at least one *tar_matrix list* (mlist);
+* at least one *matrix list* (mlist);
 
 ECAT thinks of memory locations in terms of *blocks*.  One block is 512
 bytes.  Thus block 1 starts at 0 bytes, block 2 at 512 bytes, and so on.
 
-The tar_matrix list is an array with one row per frame in the data.
+The matrix list is an array with one row per frame in the data.
 
-Columns in the tar_matrix list are:
+Columns in the matrix list are:
 
 * 0: Matrix identifier (frame number)
-* 1: tar_matrix data start block number (subheader followed by image data)
-* 2: Last block number of tar_matrix (image) data
+* 1: matrix data start block number (subheader followed by image data)
+* 2: Last block number of matrix (image) data
 * 3: Matrix status
 
     * 1: hxists - rw
     * 2: exists - ro
-    * 3: tar_matrix deleted
+    * 3: matrix deleted
 
-There is one sub-header for each image frame (or tar_matrix in the terminology
+There is one sub-header for each image frame (or matrix in the terminology
 above).  A sub-header can also be called an *image header*.  The sub-header is
 one block (512 bytes), and the frame (image) data follows.
 
@@ -235,7 +235,7 @@ patient_orient_defs = (  # code, description
     (8, 'ECAT7_Unknown_Orientation'))
 patient_orient_codes = dict(patient_orient_defs)
 
-# Indexes from the patient_orient_defs pyd_rs_data defined above for the
+# Indexes from the patient_orient_defs structure defined above for the
 # neurological and radiological viewing conventions
 patient_orient_radiological = [0, 2, 4, 6]
 patient_orient_neurological = [1, 3, 5, 7]
@@ -247,7 +247,7 @@ class EcatHeader(WrapStruct):
     Sub-parts of standard Ecat File
 
     * main header
-    * tar_matrix list
+    * matrix list
       which lists the information for each frame collected (can have 1 to many
       frames)
     * subheaders specific to each frame with possibly-variable sized data
@@ -328,7 +328,7 @@ class EcatHeader(WrapStruct):
 
 
 def read_mlist(fileobj, endianness):
-    """ read (nframes, 4) tar_matrix list array from `fileobj`
+    """ read (nframes, 4) matrix list array from `fileobj`
 
     Parameters
     ----------
@@ -338,16 +338,16 @@ def read_mlist(fileobj, endianness):
     Returns
     -------
     mlist : (nframes, 4) ndarray
-        tar_matrix list is an array with ``nframes`` rows and columns:
+        matrix list is an array with ``nframes`` rows and columns:
 
         * 0: Matrix identifier (frame number)
-        * 1: tar_matrix data start block number (subheader followed by image data)
-        * 2: Last block number of tar_matrix (image) data
+        * 1: matrix data start block number (subheader followed by image data)
+        * 2: Last block number of matrix (image) data
         * 3: Matrix status
 
             * 1: hxists - rw
             * 2: exists - ro
-            * 3: tar_matrix deleted
+            * 3: matrix deleted
 
     Notes
     -----
@@ -357,7 +357,7 @@ def read_mlist(fileobj, endianness):
     and the mlist blocks start at block number 2.
 
     The 512 bytes in an mlist block contain 32 rows of the int32 (nframes,
-    4) mlist tar_matrix.
+    4) mlist matrix.
 
     The first row of these 32 looks like a special row.  The 4 values appear
     to be (respectively):
@@ -405,7 +405,7 @@ def get_frame_order(mlist):
     -------
     id_dict: dict mapping frame number -> [mlist_row, mlist_id]
 
-    (where mlist id is value in the first column of the mlist tar_matrix )
+    (where mlist id is value in the first column of the mlist matrix )
 
     Examples
     --------
@@ -488,7 +488,7 @@ def read_subheaders(fileobj, mlist, endianness):
         Columns are:
         * 0 - Matrix identifier.
         * 1 - subheader block number
-        * 2 - Last block number of tar_matrix data block.
+        * 2 - Last block number of matrix data block.
         * 3 - Matrix status
     endianness : {'<', '>'}
         little / big endian code
@@ -753,7 +753,7 @@ class EcatImage(SpatialImage):
         """ Initialize Image
 
         The image is a combination of
-        (array, affine tar_matrix, header, subheader, mlist)
+        (array, affine matrix, header, subheader, mlist)
         with optional meta data in `extra`, and filename / file-like objects
         contained in the `file_map`.
 

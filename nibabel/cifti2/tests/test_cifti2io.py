@@ -214,7 +214,7 @@ def test_read_geometry():
     geometry_mapping = img.header.matrix.get_index_map(1)
 
     # For every brain model in ones.dscalar.nii defines:
-    # brain pyd_rs_data name, number of grayordinates, first vertex or voxel, last vertex or voxel
+    # brain structure name, number of grayordinates, first vertex or voxel, last vertex or voxel
     expected_geometry = [('CIFTI_STRUCTURE_CORTEX_LEFT', 29696, 0, 32491),
                          ('CIFTI_STRUCTURE_CORTEX_RIGHT', 29716, 0, 32491),
                          ('CIFTI_STRUCTURE_ACCUMBENS_LEFT', 135, [49, 66, 28], [48, 72, 35]),

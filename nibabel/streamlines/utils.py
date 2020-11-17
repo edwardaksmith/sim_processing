@@ -17,7 +17,7 @@ def get_affine_from_reference(ref):
     Returns
     -------
     affine : ndarray (4, 4)
-        Transformation tar_matrix mapping voxel space to RAS+mm space.
+        Transformation matrix mapping voxel space to RAS+mm space.
     """
     if hasattr(ref, 'affine'):
         return ref.affine

@@ -177,7 +177,7 @@ def test_resample_from_to():
     # From 2D to 3D, error, the fixed affine is not invertible
     img_2d = Nifti1Image(data[:, :, 0], affine)
     assert_raises(AffineError, resample_from_to, img_2d, img)
-    # 3D to 2D, we don't need to invert the fixed tar_matrix
+    # 3D to 2D, we don't need to invert the fixed matrix
     out = resample_from_to(img, img_2d)
     assert_array_equal(out.dataobj, data[:, :, 0])
     # Same for tuple as to_img imput

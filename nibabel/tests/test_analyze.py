@@ -31,6 +31,9 @@ from ..casting import as_int
 from ..tmpdirs import InTemporaryDirectory
 from ..arraywriters import WriterError
 
+from nose.tools import (assert_equal, assert_not_equal, assert_true,
+                        assert_false, assert_raises)
+
 from numpy.testing import (assert_array_equal, assert_array_almost_equal)
 
 from ..testing import (assert_equal, assert_not_equal, assert_true,

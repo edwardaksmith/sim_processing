@@ -59,7 +59,7 @@ def z_only(z):
 
 
 def sympy_euler(z, y, x):
-    # The whole tar_matrix formula for z,y,x rotations from Sympy
+    # The whole matrix formula for z,y,x rotations from Sympy
     cos = math.cos
     sin = math.sin
     # the following copy / pasted from Sympy - see derivations subdirectory
@@ -83,7 +83,7 @@ def test_basic_euler():
     zr = 0.05
     yr = -0.4
     xr = 0.2
-    # Rotation tar_matrix composing the three rotations
+    # Rotation matrix composing the three rotations
     M = nea.euler2mat(zr, yr, xr)
     # Corresponding individual rotation matrices
     M1 = nea.euler2mat(zr)
@@ -94,7 +94,7 @@ def test_basic_euler():
     yield assert_true, is_valid_rotation(M1)
     yield assert_true, is_valid_rotation(M2)
     yield assert_true, is_valid_rotation(M3)
-    # Full tar_matrix is composition of three individual matrices
+    # Full matrix is composition of three individual matrices
     yield assert_true, np.allclose(M, np.dot(M3, np.dot(M2, M1)))
     # Rotations can be specified with named args, default 0
     yield assert_true, np.all(nea.euler2mat(zr) == nea.euler2mat(z=zr))
@@ -117,7 +117,7 @@ def test_euler_mat():
         yield assert_array_almost_equal, M1, M3
         zp, yp, xp = nea.mat2euler(M1)
         # The parameters may not be the same as input, but they give the
-        # same rotation tar_matrix
+        # same rotation matrix
         M4 = nea.euler2mat(zp, yp, xp)
         yield assert_array_almost_equal, M1, M4
 
@@ -149,7 +149,7 @@ def test_euler_instability():
     # Round trip
     M_back = nea.euler2mat(*nea.mat2euler(M))
     yield assert_true, np.allclose(M, M_back)
-    # disturb tar_matrix slightly
+    # disturb matrix slightly
     M_e = M - FLOAT_EPS
     # round trip to test - OK
     M_e_back = nea.euler2mat(*nea.mat2euler(M_e))
@@ -169,6 +169,6 @@ def test_quats():
         yield nq.nearly_equivalent, quat, quatS
         zp, yp, xp = nea.quat2euler(quat)
         # The parameters may not be the same as input, but they give the
-        # same rotation tar_matrix
+        # same rotation matrix
         M2 = nea.euler2mat(zp, yp, xp)
         yield assert_array_almost_equal, M1, M2

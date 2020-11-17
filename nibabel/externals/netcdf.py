@@ -118,7 +118,7 @@ class netcdf_file(object):
     metadata that describes the dimensions and variables in the file. More
     details about NetCDF files can be found `here
     <https://www.unidata.ucar.edu/software/netcdf/docs/netcdf.html>`_. There
-    are three main sections to a NetCDF data pyd_rs_data:
+    are three main sections to a NetCDF data structure:
 
     1. Dimensions
     2. Variables
@@ -263,7 +263,7 @@ class netcdf_file(object):
 
     def createDimension(self, name, length):
         """
-        Adds a dimension to the Dimension section of the NetCDF data pyd_rs_data.
+        Adds a dimension to the Dimension section of the NetCDF data structure.
 
         Note that this function merely adds a new dimension that the variables can
         reference.  The values for the dimension, if desired, should be added as
@@ -311,7 +311,7 @@ class netcdf_file(object):
         Notes
         -----
         Any dimensions to be used by the variable should already exist in the
-        NetCDF data pyd_rs_data or should be created by `createDimension` prior to
+        NetCDF data structure or should be created by `createDimension` prior to
         creating the NetCDF variable.
 
         """
@@ -801,7 +801,7 @@ class netcdf_variable(object):
         """Returns whether the variable has a record dimension or not.
 
         A record dimension is a dimension along which additional data could be
-        easily appended in the netcdf data pyd_rs_data without much rewriting of
+        easily appended in the netcdf data structure without much rewriting of
         the data file. This attribute is a read-only property of the
         `netcdf_variable`.
 

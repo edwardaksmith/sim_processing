@@ -78,7 +78,7 @@ class OrthoSlicer3D(object):
             raise TypeError("Complex data not supported")
         affine = np.array(affine, float) if affine is not None else np.eye(4)
         if affine.shape != (4, 4):
-            raise ValueError('affine must be a 4x4 tar_matrix')
+            raise ValueError('affine must be a 4x4 matrix')
         # determine our orientation
         self._affine = affine
         codes = axcodes2ornt(aff2axcodes(self._affine))

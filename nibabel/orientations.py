@@ -35,7 +35,7 @@ def io_orientation(affine, tol=None):
     ----------
     affine : (q+1, p+1) ndarray-like
        Transformation affine from ``p`` inputs to ``q`` outputs.  Usually this
-       will be a shape (4,4) tar_matrix, transforming 3 inputs to 3 outputs, but
+       will be a shape (4,4) matrix, transforming 3 inputs to 3 outputs, but
        the code also handles the more general case
     tol : {None, float}, optional
        threshold below which SVD values of the affine are considered zero. If
@@ -54,7 +54,7 @@ def io_orientation(affine, tol=None):
     '''
     affine = np.asarray(affine)
     q, p = affine.shape[0] - 1, affine.shape[1] - 1
-    # extract the underlying rotation, zoom, shear tar_matrix
+    # extract the underlying rotation, zoom, shear matrix
     RZS = affine[:q, :p]
     zooms = np.sqrt(np.sum(RZS * RZS, axis=0))
     # Zooms can be zero, in which case all elements in the column are zero, and
@@ -62,14 +62,14 @@ def io_orientation(affine, tol=None):
     zooms[zooms == 0] = 1
     RS = RZS / zooms
     # Transform below is polar decomposition, returning the closest
-    # shearless tar_matrix R to RS
+    # shearless matrix R to RS
     P, S, Qs = npl.svd(RS, full_matrices=False)
     # Threshold the singular values to determine the rank.
     if tol is None:
         tol = S.max() * max(RS.shape) * np.finfo(S.dtype).eps
     keep = (S > tol)
     R = np.dot(P[:, keep], Qs[keep])
-    # the tar_matrix R is such that np.dot(R,R.T) is projection onto the
+    # the matrix R is such that np.dot(R,R.T) is projection onto the
     # columns of P[:,keep] and np.dot(R.T,R) is projection onto the rows
     # of Qs[keep].  R (== np.dot(R, np.eye(p))) gives rotation of the
     # unit input vectors to output coordinates.  Therefore, the row
@@ -221,7 +221,7 @@ def inv_ornt_aff(ornt, shape):
     # effect of the transpose, then undoes the effects of the flip.
     # ornt indicates the transpose that has occurred to get the current
     # ordering, relative to canonical, so we just use that.
-    # undo_reorder is a row permutatation tar_matrix
+    # undo_reorder is a row permutatation matrix
     axis_transpose = [int(v) for v in ornt[:, 0]]
     undo_reorder = np.eye(p + 1)[axis_transpose + [p], :]
     undo_flip = np.diag(list(ornt[:, 1]) + [1.0])
@@ -377,7 +377,7 @@ def aff2axcodes(aff, labels=None, tol=None):
     Parameters
     ----------
     aff : (N,M) array-like
-        affine transformation tar_matrix
+        affine transformation matrix
     labels : optional, None or sequence of (2,) sequences
         Labels for negative and positive ends of output axes of `aff`.  See
         docstring for ``ornt2axcodes`` for more detail

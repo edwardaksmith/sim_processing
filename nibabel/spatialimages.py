@@ -424,7 +424,7 @@ class SpatialImage(DataobjImage):
                  extra=None, file_map=None):
         ''' Initialize image
 
-        The image is a combination of (array-like, affine tar_matrix, header), with
+        The image is a combination of (array-like, affine matrix, header), with
         optional metadata in `extra`, and filename / file-like objects
         contained in the `file_map` mapping.
 
@@ -564,7 +564,7 @@ class SpatialImage(DataobjImage):
         resampling is performed, and no attempt is made to filter the image
         to avoid `aliasing`_.
 
-        The affine tar_matrix is updated with the new intercept (and scales, if
+        The affine matrix is updated with the new intercept (and scales, if
         down-sampling is used), so that all values are found at the same RAS
         locations.
 

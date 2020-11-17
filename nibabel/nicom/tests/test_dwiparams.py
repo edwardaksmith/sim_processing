@@ -13,7 +13,7 @@ from numpy.testing import (assert_array_equal, assert_array_almost_equal,
 
 
 def test_b2q():
-    # conversion of b tar_matrix to q
+    # conversion of b matrix to q
     q = np.array([1, 2, 3])
     s = np.sqrt(np.sum(q * q))  # vector norm
     B = np.outer(q, q)

@@ -36,8 +36,8 @@ There are therefore three axes for the rotations :math:`alpha`,
 :math:`k`.
 
 Let us express the rotation :math:`alpha` around axis `i` as a 3 by 3
-rotation tar_matrix `A`.  Similarly :math:`beta` around `j` becomes 3 x 3
-tar_matrix `B` and :math:`gamma` around `k` becomes tar_matrix `G`.  Then the
+rotation matrix `A`.  Similarly :math:`beta` around `j` becomes 3 x 3
+matrix `B` and :math:`gamma` around `k` becomes matrix `G`.  Then the
 whole rotation expressed by the Euler angle vector [ :math:`alpha`,
 :math:`beta`. :math:`gamma` ], `R` is given by::
 
@@ -50,10 +50,10 @@ performed in the order of the vector (:math:`alpha` around axis `i` =
 `A` first).
 
 To convert a given Euler angle vector to a meaningful rotation, and a
-rotation tar_matrix, we need to define:
+rotation matrix, we need to define:
 
 * the axes `i`, `j`, `k`
-* whether a rotation tar_matrix should be applied on the left of a vector to
+* whether a rotation matrix should be applied on the left of a vector to
   be transformed (vectors are column vectors) or on the right (vectors
   are row vectors).
 * whether the rotations move the axes as they are applied (intrinsic
@@ -70,8 +70,8 @@ We are using the following conventions:
   in our convention implies a :math:`alpha` radian rotation around the
   `z` axis, followed by a :math:`beta` rotation around the `y` axis,
   followed by a :math:`gamma` rotation around the `x` axis.
-* the rotation tar_matrix applies on the left, to column vectors on the
-  right, so if `R` is the rotation tar_matrix, and `v` is a 3 x N tar_matrix
+* the rotation matrix applies on the left, to column vectors on the
+  right, so if `R` is the rotation matrix, and `v` is a 3 x N matrix
   with N column vectors, the transformed vector set `vdash` is given by
   ``vdash = np.dot(R, v)``.
 * extrinsic rotations - the axes are fixed, and do not move with the
@@ -94,7 +94,7 @@ _FLOAT_EPS_4 = np.finfo(float).eps * 4.0
 
 
 def euler2mat(z=0, y=0, x=0):
-    ''' Return tar_matrix for rotations around z, y and x axes
+    ''' Return matrix for rotations around z, y and x axes
 
     Uses the z, then y, then x convention above
 
@@ -110,7 +110,7 @@ def euler2mat(z=0, y=0, x=0):
     Returns
     -------
     M : array shape (3,3)
-       Rotation tar_matrix giving same rotation as for given angles
+       Rotation matrix giving same rotation as for given angles
 
     Examples
     --------
@@ -121,7 +121,7 @@ def euler2mat(z=0, y=0, x=0):
     >>> M.shape == (3, 3)
     True
 
-    The output rotation tar_matrix is equal to the composition of the
+    The output rotation matrix is equal to the composition of the
     individual rotations
 
     >>> M1 = euler2mat(zrot)
@@ -191,7 +191,7 @@ def euler2mat(z=0, y=0, x=0):
 
 
 def mat2euler(M, cy_thresh=None):
-    ''' Discover Euler angle vector from 3x3 tar_matrix
+    ''' Discover Euler angle vector from 3x3 matrix
 
     Uses the conventions above.
 
@@ -213,7 +213,7 @@ def mat2euler(M, cy_thresh=None):
     Notes
     -----
     If there was no numerical error, the routine could be derived using
-    Sympy expression for z then y then x rotation tar_matrix, which is::
+    Sympy expression for z then y then x rotation matrix, which is::
 
       [                       cos(y)*cos(z),                       -cos(y)*sin(z),         sin(y)],
       [cos(x)*sin(z) + cos(z)*sin(x)*sin(y), cos(x)*cos(z) - sin(x)*sin(y)*sin(z), -cos(y)*sin(x)],

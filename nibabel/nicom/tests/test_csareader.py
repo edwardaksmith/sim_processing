@@ -105,7 +105,7 @@ def test_csa_params():
     csa_info = csa.read(CSA2_B1000)
     b_matrix = csa.get_b_matrix(csa_info)
     assert_equal(b_matrix.shape, (3, 3))
-    # check (by absence of error) that the B tar_matrix is positive
+    # check (by absence of error) that the B matrix is positive
     # semi-definite.
     dwp.B2q(b_matrix)  # no error
     b_value = csa.get_b_value(csa_info)

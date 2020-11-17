@@ -162,10 +162,10 @@ class Wrapper(object):
 
     @one_time
     def rotation_matrix(self):
-        """ Return rotation tar_matrix between array indices and mm
+        """ Return rotation matrix between array indices and mm
 
         Note that we swap the two columns of the 'ImageOrientPatient'
-        when we create the rotation tar_matrix.  This is takes into account
+        when we create the rotation matrix.  This is takes into account
         the slightly odd ij transpose construction of the DICOM
         orientation fields - see doc/theory/dicom_orientaiton.rst.
         """
@@ -174,17 +174,17 @@ class Wrapper(object):
         if iop is None or s_norm is None:
             return None
         R = np.eye(3)
-        # np.fliplr(iop) gives tar_matrix F in
+        # np.fliplr(iop) gives matrix F in
         # doc/theory/dicom_orientation.rst The fliplr accounts for the
         # fact that the first column in ``iop`` refers to changes in
         # column index, and the second to changes in row index.
         R[:, :2] = np.fliplr(iop)
         R[:, 2] = s_norm
-        # check this is in fact a rotation tar_matrix. Error comes from compromise
+        # check this is in fact a rotation matrix. Error comes from compromise
         # motivated in ``doc/source/notebooks/ata_error.ipynb``, and from
         # discussion at https://github.com/nipy/nibabel/pull/156
         if not np.allclose(np.eye(3), np.dot(R, R.T), atol=5e-5):
-            raise WrapperPrecisionError('Rotation tar_matrix not nearly '
+            raise WrapperPrecisionError('Rotation matrix not nearly '
                                         'orthogonal')
         return R
 
@@ -298,7 +298,7 @@ class Wrapper(object):
            Affine giving transformation between voxels in data array and
            mm in the DICOM patient coordinate system.
         """
-        # rotation tar_matrix already accounts for the ij transpose in the
+        # rotation matrix already accounts for the ij transpose in the
         # DICOM image orientation patient transform.  So. column 0 is
         # direction cosine for changes in row index, column 1 is
         # direction cosine for changes in column index
@@ -700,7 +700,7 @@ class SiemensWrapper(Wrapper):
 
     @one_time
     def b_matrix(self):
-        """ Get DWI B tar_matrix referring to voxel space
+        """ Get DWI B matrix referring to voxel space
 
         Parameters
         ----------
@@ -709,12 +709,12 @@ class SiemensWrapper(Wrapper):
         Returns
         -------
         B : (3,3) array or None
-           B tar_matrix in *voxel* orientation space.  Returns None if this is
+           B matrix in *voxel* orientation space.  Returns None if this is
            not a Siemens header with the required information.  We return
            None if this is a b0 acquisition
         """
         hdr = self.csa_header
-        # read B tar_matrix as recorded in CSA header.  This tar_matrix refers to
+        # read B matrix as recorded in CSA header.  This matrix refers to
         # the space of the DICOM patient coordinate space.
         B = csar.get_b_matrix(hdr)
         if B is None:  # may be not diffusion or B0 image
@@ -722,16 +722,16 @@ class SiemensWrapper(Wrapper):
             if bval_requested is None:
                 return None
             if bval_requested != 0:
-                raise csar.CSAError('No B tar_matrix and b value != 0')
+                raise csar.CSAError('No B matrix and b value != 0')
             return np.zeros((3, 3))
         # rotation from voxels to DICOM PCS, inverted to give the rotation
-        # from DPCS to voxels.  Because this is an orthonormal tar_matrix, its
+        # from DPCS to voxels.  Because this is an orthonormal matrix, its
         # transpose is its inverse
         R = self.rotation_matrix.T
         # because B results from V dot V.T, the rotation B is given by R dot
         # V dot V.T dot R.T == R dot B dot R.T
         B_vox = np.dot(R, np.dot(B, R.T))
-        # fix presumed rounding errors in the B tar_matrix by making it positive
+        # fix presumed rounding errors in the B matrix by making it positive
         # semi-definite.
         return nearest_pos_semi_def(B_vox)
 

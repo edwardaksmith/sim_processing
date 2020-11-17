@@ -195,13 +195,13 @@ def _arr2txt(arr, elem_fmt):
 
 
 class GiftiCoordSystem(xml.XmlSerializable):
-    """ Gifti coordinate system transform tar_matrix
+    """ Gifti coordinate system transform matrix
 
     Quotes are from the gifti spec dated 2011-01-14.
 
         "For a DataArray with an Intent NIFTI_INTENT_POINTSET, this element
         describes the stereotaxic space of the data before and after the
-        application of a transformation tar_matrix. The most common stereotaxic
+        application of a transformation matrix. The most common stereotaxic
         space is the Talairach Space that places the origin at the anterior
         commissure and the negative X, Y, and Z axes correspond to left,
         posterior, and inferior respectively.  At least one
@@ -214,7 +214,7 @@ class GiftiCoordSystem(xml.XmlSerializable):
     ----------
     dataspace : int
         From the spec: "Contains the stereotaxic space of a DataArray's data
-        prior to application of the transformation tar_matrix. The stereotaxic
+        prior to application of the transformation matrix. The stereotaxic
         space should be one of:
             NIFTI_XFORM_UNKNOWN
             NIFTI_XFORM_SCANNER_ANAT
@@ -223,17 +223,17 @@ class GiftiCoordSystem(xml.XmlSerializable):
             NIFTI_XFORM_MNI_152"
     xformspace : int
         Spec: "Contains the stereotaxic space of a DataArray's data after
-        application of the transformation tar_matrix. See the DataSpace element for
+        application of the transformation matrix. See the DataSpace element for
         a list of stereotaxic spaces."
     xform : array-like shape (4, 4)
-        Affine transformation tar_matrix
+        Affine transformation matrix
     """
 
     def __init__(self, dataspace=0, xformspace=0, xform=None):
         self.dataspace = dataspace
         self.xformspace = xformspace
         if xform is None:
-            # create identity tar_matrix
+            # create identity matrix
             self.xform = np.identity(4)
         else:
             self.xform = xform
@@ -329,7 +329,7 @@ class GiftiDataArray(xml.XmlSerializable):
         The Endianness to store the data array.  Should correspond to the
         machine endianness.  Default is system byteorder.
     coordsys : :class:`GiftiCoordSystem` instance
-        Input and output coordinate system with tranformation tar_matrix between
+        Input and output coordinate system with tranformation matrix between
         the two.
     ind_ord : int
         The ordering of the array. see util.array_index_order_codes.  Default

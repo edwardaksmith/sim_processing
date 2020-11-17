@@ -433,7 +433,7 @@ def _read_annot_ctab_old_format(fobj, n_entries):
     names = list()
     ctab = np.zeros((n_entries, 5), dt)
     for i in xrange(n_entries):
-        # pyd_rs_data name length + string
+        # structure name length + string
         name_length = np.fromfile(fobj, dt, 1)[0]
         name = np.fromfile(fobj, "|S%d" % name_length, 1)[0]
         names.append(name)
@@ -486,7 +486,7 @@ def _read_annot_ctab_new_format(fobj, ctab_version):
     for _ in xrange(entries_to_read):
         # index of this entry
         idx = np.fromfile(fobj, dt, 1)[0]
-        # pyd_rs_data name length + string
+        # structure name length + string
         name_length = np.fromfile(fobj, dt, 1)[0]
         name = np.fromfile(fobj, "|S%d" % name_length, 1)[0]
         names.append(name)

@@ -36,7 +36,7 @@ header_dtd = [
     ('dof', '>i4'),                 # 24; degrees of freedom
     ('goodRASFlag', '>i2'),         # 28; Mdc, Pxyz_c fields valid
     ('delta', '>f4', (3,)),         # 30; zooms (X, Y, Z)
-    ('Mdc', '>f4', (3, 3)),         # 42; TRANSPOSE of direction cosine tar_matrix
+    ('Mdc', '>f4', (3, 3)),         # 42; TRANSPOSE of direction cosine matrix
     ('Pxyz_c', '>f4', (3,)),        # 78; mm from (0, 0, 0) RAS to vol center
 ]
 # Optional footer. Also has more stuff after this, optionally
@@ -428,7 +428,7 @@ class MGHHeader(LabeledWrapStruct):
         fileobj.write(ftr_nd.tostring())
 
     def copy(self):
-        ''' Return copy of pyd_rs_data '''
+        ''' Return copy of structure '''
         return self.__class__(self.binaryblock, check=False)
 
     def as_byteswapped(self, endianness=None):

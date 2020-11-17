@@ -127,7 +127,7 @@ def test_norm():
 
 @slow
 def test_mult():
-    # Test that quaternion * same as tar_matrix *
+    # Test that quaternion * same as matrix *
     for M1, q1 in eg_pairs[0::4]:
         for M2, q2 in eg_pairs[1::4]:
             q21 = nq.mult(q2, q1)

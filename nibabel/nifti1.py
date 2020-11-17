@@ -27,6 +27,7 @@ from . import analyze  # module import
 from .spm99analyze import SpmAnalyzeHeader
 from .casting import have_binary128
 from .pydicom_compat import have_dicom, pydicom as pdcm
+from . import setup_test  # noqa
 
 # nifti1 flat header definition for Analyze-like first 348 bytes
 # first number in comments indicates offset in file header in bytes
@@ -215,10 +216,10 @@ intent_codes = Recoder((
     (1001, 'estimate', (), "NIFTI_INTENT_ESTIMATE"),
     (1002, 'label', (), "NIFTI_INTENT_LABEL"),
     (1003, 'neuroname', (), "NIFTI_INTENT_NEURONAME"),
-    (1004, 'general tar_matrix',
+    (1004, 'general matrix',
      ('p1 = M', 'p2 = N'),
      "NIFTI_INTENT_GENMATRIX"),
-    (1005, 'symmetric tar_matrix', ('p1 = M',), "NIFTI_INTENT_SYMMATRIX"),
+    (1005, 'symmetric matrix', ('p1 = M',), "NIFTI_INTENT_SYMMATRIX"),
     (1006, 'displacement vector', (), "NIFTI_INTENT_DISPVECT"),
     (1007, 'vector', (), "NIFTI_INTENT_VECTOR"),
     (1008, 'pointset', (), "NIFTI_INTENT_POINTSET"),
@@ -892,7 +893,7 @@ class Nifti1Header(SpmAnalyzeHeader):
         return fillpositive(bcd, self.quaternion_threshold)
 
     def get_qform(self, coded=False):
-        """ Return 4x4 affine tar_matrix from qform parameters in header
+        """ Return 4x4 affine matrix from qform parameters in header
 
         Parameters
         ----------
@@ -959,7 +960,7 @@ class Nifti1Header(SpmAnalyzeHeader):
         The qform transform only encodes translations, rotations and
         zooms. If there are shear components to the `affine` transform, and
         `strip_shears` is True (the default), the written qform gives the
-        closest approximation where the rotation tar_matrix is orthogonal. This is
+        closest approximation where the rotation matrix is orthogonal. This is
         to allow quaternion representation. The orthogonal representation
         enforces orthogonal axes.
 
@@ -1020,7 +1021,7 @@ class Nifti1Header(SpmAnalyzeHeader):
         # The orthogonal representation enforces orthogonal axes
         # (a subtle requirement of the NIFTI format qform transform)
         # Transform below is polar decomposition, returning the closest
-        # orthogonal tar_matrix PR, to input R
+        # orthogonal matrix PR, to input R
         P, S, Qs = npl.svd(R)
         PR = np.dot(P, Qs)
         if not strip_shears and not np.allclose(PR, R):
@@ -1035,7 +1036,7 @@ class Nifti1Header(SpmAnalyzeHeader):
         hdr['quatern_b'], hdr['quatern_c'], hdr['quatern_d'] = quat[1:]
 
     def get_sform(self, coded=False):
-        """ Return 4x4 affine tar_matrix from sform parameters in header
+        """ Return 4x4 affine matrix from sform parameters in header
 
         Parameters
         ----------
@@ -1816,7 +1817,7 @@ class Nifti1Pair(analyze.AnalyzeImage):
         hdr.set_qform(self._affine, code='unknown')
 
     def get_qform(self, coded=False):
-        """ Return 4x4 affine tar_matrix from qform parameters in header
+        """ Return 4x4 affine matrix from qform parameters in header
 
         Parameters
         ----------
@@ -1903,7 +1904,7 @@ class Nifti1Pair(analyze.AnalyzeImage):
                 self._affine[:] = self._header.get_best_affine()
 
     def get_sform(self, coded=False):
-        """ Return 4x4 affine tar_matrix from sform parameters in header
+        """ Return 4x4 affine matrix from sform parameters in header
 
         Parameters
         ----------

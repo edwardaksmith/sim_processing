@@ -331,7 +331,7 @@ class _TestLabeledWrapStruct(_TestWrapStructBase):
         rec = Recoder([[0, 'fullness of heart']], ('code', 'label'))
         hdr._field_recoders['improbable'] = rec
         assert_raises(ValueError, hdr.get_value_label, 'improbable')
-        # If the key exists in the pyd_rs_data, and is intable, then we can recode
+        # If the key exists in the structure, and is intable, then we can recode
         for key, value in hdr.items():
             # No recoder at first
             assert_raises(ValueError, hdr.get_value_label, 0)

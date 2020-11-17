@@ -23,7 +23,7 @@ try:
 except NameError:  # python 3
     basestring = str
 
-# Definition of trackvis header pyd_rs_data.
+# Definition of trackvis header structure.
 # See http://www.trackvis.org/docs/?subsect=fileformat
 # See https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
 header_1_dtd = [
@@ -51,10 +51,10 @@ header_1_dtd = [
     ('hdr_size', 'i4'),
 ]
 
-# Version 2 adds a 4x4 tar_matrix giving the affine transformation going
-# from voxel coordinates in the referenced 3D voxel tar_matrix, to xyz
+# Version 2 adds a 4x4 matrix giving the affine transformation going
+# from voxel coordinates in the referenced 3D voxel matrix, to xyz
 # coordinates (axes L->R, P->A, I->S).  IF (0 based) value [3, 3] from
-# this tar_matrix is 0, this means the tar_matrix is not recorded.
+# this matrix is 0, this means the matrix is not recorded.
 header_2_dtd = [
     ('id_string', 'S6'),
     ('dim', 'h', 3),
@@ -167,7 +167,7 @@ def read(fileobj, as_generator=False, points_space=None, strict=True):
             raise HeaderError('Invalid hdr_size of %s'
                               % hdr['hdr_size'])
         endianness = swapped_code
-    # Check version and adapt pyd_rs_data accordingly
+    # Check version and adapt structure accordingly
     version = hdr['version']
     if version not in (1, 2):
         raise HeaderError('Reader only supports versions 1 and 2')
@@ -644,8 +644,8 @@ def aff_from_hdr(trk_hdr, atleast_v2=None):
     aff = np.eye(4)
     # The IOP field has only two of the three columns we need
     iop = trk_hdr['image_orientation_patient'].reshape(2, 3).T
-    # R might be a rotation tar_matrix (and so completed by the cross product of
-    # the first two columns), or it might be an orthogonal tar_matrix with negative
+    # R might be a rotation matrix (and so completed by the cross product of
+    # the first two columns), or it might be an orthogonal matrix with negative
     # determinant. We try pure rotation first
     R = np.c_[iop, np.cross(*iop.T)]
     vox = trk_hdr['voxel_size']
@@ -709,7 +709,7 @@ def aff_to_hdr(affine, trk_hdr, pos_vox=None, set_order=None):
     with the fields 'origin', 'voxel_size' and 'image_orientation_patient'.
     Unfortunately, to be able to store any affine, we'd need to be able to set
     negative voxel sizes, to encode axis flips. This is because
-    'image_orientation_patient' is only two columns of the 3x3 rotation tar_matrix,
+    'image_orientation_patient' is only two columns of the 3x3 rotation matrix,
     and we need to know the number of flips to reconstruct the third column
     reliably.  It turns out that negative flips upset trackvis (the
     application).  The application also ignores the origin field, and may not
@@ -744,17 +744,17 @@ def aff_to_hdr(affine, trk_hdr, pos_vox=None, set_order=None):
     zooms = np.sqrt(np.sum(RZS * RZS, axis=0))
     RS = RZS / zooms
     # If you said we could, adjust zooms to make RS correspond (below) to a
-    # true rotation tar_matrix.  We need to set the sign of one of the zooms to
+    # true rotation matrix.  We need to set the sign of one of the zooms to
     # deal with this.  Trackvis (the application) doesn't like negative zooms
     # at all, so you might want to disallow this with the pos_vox option.
     if not pos_vox and npl.det(RS) < 0:
         zooms[0] *= -1
         RS[:, 0] *= -1
-    # retrieve rotation tar_matrix from RS with polar decomposition.
+    # retrieve rotation matrix from RS with polar decomposition.
     # Discard shears because we cannot store them.
     P, S, Qs = npl.svd(RS)
     R = np.dot(P, Qs)
-    # it's an orthogonal tar_matrix
+    # it's an orthogonal matrix
     assert np.allclose(np.dot(R, R.T), np.eye(3))
     # set into header
     trk_hdr['origin'] = trans

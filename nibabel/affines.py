@@ -17,7 +17,7 @@ class AffineError(ValueError):
 
 
 def apply_affine(aff, pts):
-    """ Apply affine tar_matrix `aff` to points `pts`
+    """ Apply affine matrix `aff` to points `pts`
 
     Returns result of application of `aff` to the *right* of `pts`.  The
     coordinate dimension of `pts` should be the last.
@@ -87,23 +87,23 @@ def apply_affine(aff, pts):
 
 
 def to_matvec(transform):
-    """Split a transform into its tar_matrix and vector components.
+    """Split a transform into its matrix and vector components.
 
     The tranformation must be represented in homogeneous coordinates and is
-    split into its rotation tar_matrix and translation vector components.
+    split into its rotation matrix and translation vector components.
 
     Parameters
     ----------
     transform : array-like
-        NxM transform tar_matrix in homogeneous coordinates representing an affine
+        NxM transform matrix in homogeneous coordinates representing an affine
         transformation from an (N-1)-dimensional space to an (M-1)-dimensional
         space. An example is a 4x4 transform representing rotations and
-        translations in 3 dimensions. A 4x3 tar_matrix can represent a
+        translations in 3 dimensions. A 4x3 matrix can represent a
         2-dimensional plane embedded in 3 dimensional space.
 
     Returns
     -------
-    tar_matrix : (N-1, M-1) array
+    matrix : (N-1, M-1) array
         Matrix component of `transform`
     vector : (M-1,) array
         Vector compoent of `transform`
@@ -130,9 +130,9 @@ def to_matvec(transform):
 
 
 def from_matvec(matrix, vector=None):
-    """ Combine a tar_matrix and vector into an homogeneous affine
+    """ Combine a matrix and vector into an homogeneous affine
 
-    Combine a rotation / scaling / shearing tar_matrix and translation vector into
+    Combine a rotation / scaling / shearing matrix and translation vector into
     a transform in homogeneous coordinates.
 
     Parameters
@@ -147,7 +147,7 @@ def from_matvec(matrix, vector=None):
     Returns
     -------
     xform : array
-        An (N+1, M+1) homogenous transform tar_matrix.
+        An (N+1, M+1) homogenous transform matrix.
 
     See Also
     --------
@@ -189,7 +189,7 @@ def append_diag(aff, steps, starts=()):
     Parameters
     ----------
     aff : 2D array
-        N by M affine tar_matrix
+        N by M affine matrix
     steps : scalar or sequence
         diagonal elements to append.
     starts : scalar or sequence

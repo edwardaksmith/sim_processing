@@ -262,7 +262,7 @@ def test_points_processing():
         (raw_streams, hdr), (proc_streams, _) = _rt(rasmm_streams, hdr, 'rasmm')
         assert_true(streamlist_equal(vxmm_streams, raw_streams))
         assert_true(streamlist_equal(rasmm_streams, proc_streams))
-        # More complex test to check tar_matrix orientation
+        # More complex test to check matrix orientation
         fancy_affine = np.array([[0., -2, 0, 10],
                                  [3, 0, 0, 20],
                                  [0, 0, 4, 30],

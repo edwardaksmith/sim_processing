@@ -37,10 +37,10 @@ from ...tests.test_wrapstruct import _TestLabeledWrapStruct
 
 MGZ_FNAME = os.path.join(data_path, 'test.mgz')
 
-# sample voxel to ras tar_matrix (mri_info --vox2ras)
+# sample voxel to ras matrix (mri_info --vox2ras)
 v2r = np.array([[1, 2, 3, -13], [2, 3, 1, -11.5],
                 [3, 1, 2, -11.5], [0, 0, 0, 1]], dtype=np.float32)
-# sample voxel to ras - tkr tar_matrix (mri_info --vox2ras-tkr)
+# sample voxel to ras - tkr matrix (mri_info --vox2ras-tkr)
 v2rtkr = np.array([[-1.0, 0.0, 0.0, 1.5],
                    [0.0, 0.0, 1.0, -2.5],
                    [0.0, -1.0, 0.0, 2.0],
@@ -90,7 +90,7 @@ def test_write_mgh():
     # write our data to a tmp file
     v = np.arange(120)
     v = v.reshape((5, 4, 3, 2)).astype(np.float32)
-    # form a MGHImage object using data and vox2ras tar_matrix
+    # form a MGHImage object using data and vox2ras matrix
     img = MGHImage(v, v2r)
     with InTemporaryDirectory():
         save(img, 'tmpsave.mgz')
@@ -121,7 +121,7 @@ def test_write_noaffine_mgh():
     # and see if it uses the default values to save
     v = np.ones((7, 13, 3, 22)).astype(np.uint8)
     # form a MGHImage object using data
-    # and the default affine tar_matrix (Note the "None")
+    # and the default affine matrix (Note the "None")
     img = MGHImage(v, None)
     with InTemporaryDirectory():
         save(img, 'tmpsave.mgz')
@@ -171,7 +171,7 @@ def bad_dtype_mgh():
     # raises MGHError
     v = np.ones((7, 13, 3, 22)).astype(np.uint16)
     # form a MGHImage object using data
-    # and the default affine tar_matrix (Note the "None")
+    # and the default affine matrix (Note the "None")
     MGHImage(v, None)
 
 
@@ -184,7 +184,7 @@ def test_filename_exts():
     # Test acceptable filename extensions
     v = np.ones((7, 13, 3, 22)).astype(np.uint8)
     # form a MGHImage object using data
-    # and the default affine tar_matrix (Note the "None")
+    # and the default affine matrix (Note the "None")
     img = MGHImage(v, None)
     # Check if these extensions allow round trip
     for ext in ('.mgh', '.mgz'):

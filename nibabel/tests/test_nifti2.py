@@ -13,7 +13,8 @@ import os
 import numpy as np
 
 from .. import nifti2
-from ..nifti1 import (Nifti1Header, Nifti1PairHeader, Nifti1Extension)
+from ..nifti1 import (Nifti1Header, Nifti1PairHeader, Nifti1Extension,
+                      Nifti1Extensions)
 from ..nifti2 import (Nifti2Header, Nifti2PairHeader, Nifti2Image, Nifti2Pair)
 
 from .test_nifti1 import (TestNifti1PairHeader, TestNifti1SingleHeader,

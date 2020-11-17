@@ -467,18 +467,18 @@ class TestSpm99AnalyzeImage(test_analyze.TestAnalyzeImage, ImageScalingMixin):
         to_111 = np.eye(4)
         to_111[:3, 3] = 1
         assert_array_equal(mats['mat'], np.dot(aff, from_111))
-        # The M tar_matrix does not include flips, so if we only have the M tar_matrix
+        # The M matrix does not include flips, so if we only have the M matrix
         # in the mat file, and we have default flipping, the mat resulting
-        # should have a flip.  The 'mat' tar_matrix does include flips and so
+        # should have a flip.  The 'mat' matrix does include flips and so
         # should be unaffected by the flipping.  If both are present we prefer
-        # the the 'mat' tar_matrix.
+        # the the 'mat' matrix.
         assert_true(img.header.default_x_flip)  # check the default
         flipper = np.diag([-1, 1, 1, 1])
         assert_array_equal(mats['M'], np.dot(aff, np.dot(flipper, from_111)))
         mat_fileobj.seek(0)
         savemat(mat_fileobj,
                 dict(M=np.diag([3, 4, 5, 1]), mat=np.diag([6, 7, 8, 1])))
-        # Check we are preferring the 'mat' tar_matrix
+        # Check we are preferring the 'mat' matrix
         r_img = img_klass.from_file_map(fm)
         assert_array_equal(r_img.get_data(), arr)
         assert_array_equal(r_img.affine,

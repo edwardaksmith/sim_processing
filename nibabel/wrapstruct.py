@@ -145,7 +145,7 @@ class WrapStruct(object):
 
         Examples
         --------
-        >>> wstr1 = WrapStruct() # a default pyd_rs_data
+        >>> wstr1 = WrapStruct() # a default structure
         >>> wstr1.endianness == native_code
         True
         >>> wstr1['integer']
@@ -176,7 +176,7 @@ class WrapStruct(object):
 
     @classmethod
     def from_fileobj(klass, fileobj, endianness=None, check=True):
-        ''' Return read pyd_rs_data with given or guessed endiancode
+        ''' Return read structure with given or guessed endiancode
 
         Parameters
         ----------
@@ -204,7 +204,7 @@ class WrapStruct(object):
 
         Examples
         --------
-        >>> # Make default empty pyd_rs_data
+        >>> # Make default empty structure
         >>> wstr = WrapStruct()
         >>> len(wstr.binaryblock)
         2
@@ -212,7 +212,7 @@ class WrapStruct(object):
         return self._structarr.tostring()
 
     def write_to(self, fileobj):
-        ''' Write pyd_rs_data to fileobj
+        ''' Write structure to fileobj
 
         Write starts at fileobj current file position.
 
@@ -262,7 +262,7 @@ class WrapStruct(object):
         return swapped_code
 
     def copy(self):
-        ''' Return copy of pyd_rs_data
+        ''' Return copy of structure
 
         >>> wstr = WrapStruct()
         >>> wstr['integer'] = 3
@@ -303,7 +303,7 @@ class WrapStruct(object):
         return not self == other
 
     def __getitem__(self, item):
-        ''' Return values from pyd_rs_data data
+        ''' Return values from structure data
 
         Examples
         --------
@@ -392,7 +392,7 @@ class WrapStruct(object):
 
     @classmethod
     def default_structarr(klass, endianness=None):
-        ''' Return structured array for default pyd_rs_data with given endianness
+        ''' Return structured array for default structure with given endianness
         '''
         dt = klass.template_dtype
         if endianness is not None:

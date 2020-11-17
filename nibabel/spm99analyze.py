@@ -160,7 +160,7 @@ class Spm99AnalyzeHeader(SpmAnalyzeHeader):
     get_best_affine = get_origin_affine
 
     def set_origin_from_affine(self, affine):
-        ''' Set SPM origin to header from affine tar_matrix.
+        ''' Set SPM origin to header from affine matrix.
 
         The ``origin`` field was read but not written by SPM99 and 2.  It was
         used for storing a central voxel coordinate, that could be used in
@@ -176,7 +176,7 @@ class Spm99AnalyzeHeader(SpmAnalyzeHeader):
         Parameters
         ----------
         affine : array-like, shape (4,4)
-           Affine tar_matrix to set
+           Affine matrix to set
 
         Returns
         -------
@@ -296,11 +296,11 @@ class Spm99AnalyzeImage(analyze.AnalyzeImage):
         if 'mat' in mats:  # this overrides a 'M', and includes any flip
             mat = mats['mat']
             if mat.ndim > 2:
-                warnings.warn('More than one affine in "mat" tar_matrix, '
+                warnings.warn('More than one affine in "mat" matrix, '
                               'using first')
                 mat = mat[:, :, 0]
             ret._affine = mat
-        elif 'M' in mats:  # the 'M' tar_matrix does not include flips
+        elif 'M' in mats:  # the 'M' matrix does not include flips
             hdr = ret._header
             if hdr.default_x_flip:
                 ret._affine = np.dot(np.diag([-1, 1, 1, 1]), mats['M'])

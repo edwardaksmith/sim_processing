@@ -54,8 +54,8 @@ image_file = os.path.join(data_path, 'example4d.nii.gz')
 from nibabel.pydicom_compat import pydicom, dicom_test
 
 
-# Example transformation tar_matrix
-R = [[0, -1, 0], [1, 0, 0], [0, 0, 1]]  # rotation tar_matrix
+# Example transformation matrix
+R = [[0, -1, 0], [1, 0, 0], [0, 0, 1]]  # rotation matrix
 Z = [2.0, 3.0, 4.0]  # zooms
 T = [20, 30, 40]  # translations
 A = np.eye(4)

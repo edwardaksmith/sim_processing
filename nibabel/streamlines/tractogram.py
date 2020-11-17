@@ -260,9 +260,9 @@ class Tractogram(object):
     """ Container for streamlines and their data information.
 
     Streamlines of a tractogram can be in any coordinate system of your
-    choice as long as you provide the correct `affine_to_rasmm` tar_matrix, at
+    choice as long as you provide the correct `affine_to_rasmm` matrix, at
     construction time. When applied to streamlines coordinates, that
-    transformation tar_matrix should bring the streamlines back to world space
+    transformation matrix should bring the streamlines back to world space
     (RAS+ and mm space) [1]_.
 
     Moreover, when streamlines are mapped back to voxel space [2]_, a
@@ -320,7 +320,7 @@ class Tractogram(object):
             points for a particular streamline $t$ and $M_i$ is the number
             scalar values to store for that particular information $i$.
         affine_to_rasmm : ndarray of shape (4, 4) or None, optional
-            Transformation tar_matrix that brings the streamlines contained in
+            Transformation matrix that brings the streamlines contained in
             this tractogram to *RAS+* and *mm* space where coordinate (0,0,0)
             refers to the center of the voxel. By default, the streamlines
             are in an unknown space, i.e. affine_to_rasmm is None.
@@ -365,7 +365,7 @@ class Tractogram(object):
         if value is not None:
             value = np.array(value)
             if value.shape != (4, 4):
-                msg = ("Affine tar_matrix has a shape of (4, 4) but a ndarray with"
+                msg = ("Affine matrix has a shape of (4, 4) but a ndarray with"
                        "shape {} was provided instead.").format(value.shape)
                 raise ValueError(msg)
 
@@ -515,9 +515,9 @@ class LazyTractogram(Tractogram):
     friendly since it doesn't require having all this data loaded in memory.
 
     Streamlines of a tractogram can be in any coordinate system of your
-    choice as long as you provide the correct `affine_to_rasmm` tar_matrix, at
+    choice as long as you provide the correct `affine_to_rasmm` matrix, at
     construction time. When applied to streamlines coordinates, that
-    transformation tar_matrix should bring the streamlines back to world space
+    transformation matrix should bring the streamlines back to world space
     (RAS+ and mm space) [1]_.
 
     Moreover, when streamlines are mapped back to voxel space [2]_, a
@@ -586,7 +586,7 @@ class LazyTractogram(Tractogram):
             streamline $t$ and $M_i$ is the number of values to store for
             that particular information $i$.
         affine_to_rasmm : ndarray of shape (4, 4) or None, optional
-            Transformation tar_matrix that brings the streamlines contained in
+            Transformation matrix that brings the streamlines contained in
             this tractogram to *RAS+* and *mm* space where coordinate (0,0,0)
             refers to the center of the voxel. By default, the streamlines
             are in an unknown space, i.e. affine_to_rasmm is None.
@@ -793,13 +793,13 @@ class LazyTractogram(Tractogram):
     def apply_affine(self, affine, lazy=True):
         """ Applies an affine transformation to the streamlines.
 
-        The transformation given by the `affine` tar_matrix is applied after any
+        The transformation given by the `affine` matrix is applied after any
         other pending transformations to the streamline points.
 
         Parameters
         ----------
         affine : 2D array (4,4)
-            Transformation tar_matrix that will be applied on each streamline.
+            Transformation matrix that will be applied on each streamline.
         lazy : True, optional
             Should always be True for :class:`LazyTractogram` object. Doing
             otherwise will raise a ValueError.

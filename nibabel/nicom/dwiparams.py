@@ -13,8 +13,8 @@ Thus:
 
 (``norm(q)`` is the Euclidean norm of ``q``)
 
-The B tar_matrix ``B`` is a symmetric positive semi-definite tar_matrix.  If
-``q_est`` is the closest q vector equivalent to the B tar_matrix, then:
+The B matrix ``B`` is a symmetric positive semi-definite matrix.  If
+``q_est`` is the closest q vector equivalent to the B matrix, then:
 
    B ~ (q_est . q_est.T) / norm(q_est)
 
@@ -25,7 +25,7 @@ from .. import setup_test as setup_module  # noqa
 
 
 def B2q(B, tol=None):
-    ''' Estimate q vector from input B tar_matrix `B`
+    ''' Estimate q vector from input B matrix `B`
 
     We require that the input `B` is symmetric positive definite.
 
@@ -36,10 +36,10 @@ def B2q(B, tol=None):
     Parameters
     ----------
     B : (3,3) array-like
-       B tar_matrix - symmetric. We do not check the symmetry.
+       B matrix - symmetric. We do not check the symmetry.
     tol : None or float
        absolute tolerance below which to consider eigenvalues of the B
-       tar_matrix to be small enough not to worry about them being negative,
+       matrix to be small enough not to worry about them being negative,
        in check for positive semi-definite-ness.  None (default) results
        in a fairly tight numerical threshold proportional to the maximum
        eigenvalue
@@ -47,11 +47,11 @@ def B2q(B, tol=None):
     Returns
     -------
     q : (3,) vector
-       Estimated q vector from B tar_matrix `B`
+       Estimated q vector from B matrix `B`
     '''
     B = np.asarray(B)
     if not np.allclose(B - B.T, 0):
-        raise ValueError('B tar_matrix is not symmetric enough')
+        raise ValueError('B matrix is not symmetric enough')
     w, v = npl.eigh(B)
     if tol is None:
         tol = np.abs(w.max()) * B.shape[0] * np.finfo(w.dtype).eps
@@ -79,12 +79,12 @@ def nearest_pos_semi_def(B):
     Parameters
     ----------
     B : (3,3) array-like
-       B tar_matrix - symmetric. We do not check the symmetry.
+       B matrix - symmetric. We do not check the symmetry.
 
     Returns
     -------
     npds : (3,3) array
-       Estimated nearest positive semi-definite array to tar_matrix `B`.
+       Estimated nearest positive semi-definite array to matrix `B`.
 
     Examples
     --------

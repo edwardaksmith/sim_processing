@@ -12,7 +12,7 @@ from os.path import join as pjoin
 
 import numpy as np
 
-from .. import Nifti1Image
+from .. import load, Nifti1Image
 from .. import brikhead
 
 from nose.tools import (assert_true, assert_equal, assert_raises)

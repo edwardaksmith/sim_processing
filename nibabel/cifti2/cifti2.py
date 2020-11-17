@@ -393,7 +393,7 @@ class Cifti2NamedMap(xml.XmlSerializable):
 
 
 class Cifti2Surface(xml.XmlSerializable):
-    """Cifti surface: association of brain pyd_rs_data and number of vertices
+    """Cifti surface: association of brain structure and number of vertices
 
     * Description - Specifies the number of vertices for a surface, when
       IndicesMapToDataType is "CIFTI_INDEX_TYPE_PARCELS." This is separate from
@@ -402,10 +402,10 @@ class Cifti2Surface(xml.XmlSerializable):
     * Attributes
 
         * BrainStructure - A string from the BrainStructure list to identify
-          what surface pyd_rs_data this element refers to (usually left cortex,
+          what surface structure this element refers to (usually left cortex,
           right cortex, or cerebellum).
         * SurfaceNumberOfVertices - The number of vertices that this
-          pyd_rs_data's surface contains.
+          structure's surface contains.
 
     * Child Elements: [NA]
     * Text Content: [NA]
@@ -414,7 +414,7 @@ class Cifti2Surface(xml.XmlSerializable):
     Attributes
     ----------
     brain_structure : str
-        Name of brain pyd_rs_data
+        Name of brain structure
     surface_number_of_vertices : int
         Number of vertices on surface
     """
@@ -432,9 +432,9 @@ class Cifti2Surface(xml.XmlSerializable):
 
 
 class Cifti2VoxelIndicesIJK(xml.XmlSerializable, MutableSequence):
-    """CIFTI2 VoxelIndicesIJK: Set of voxel indices contained in a pyd_rs_data
+    """CIFTI2 VoxelIndicesIJK: Set of voxel indices contained in a structure
 
-    * Description - Identifies the voxels that model a brain pyd_rs_data, or
+    * Description - Identifies the voxels that model a brain structure, or
       participate in a parcel. Note that when this is a child of BrainModel,
       the IndexCount attribute of the BrainModel indicates the number of voxels
       contained in this element.
@@ -514,7 +514,7 @@ class Cifti2VoxelIndicesIJK(xml.XmlSerializable, MutableSequence):
 
 
 class Cifti2Vertices(xml.XmlSerializable, MutableSequence):
-    """CIFTI2 vertices - association of brain pyd_rs_data and a list of vertices
+    """CIFTI2 vertices - association of brain structure and a list of vertices
 
     * Description - Contains a BrainStructure type and a list of vertex indices
       within a Parcel.
@@ -653,19 +653,19 @@ class Cifti2Parcel(xml.XmlSerializable):
 class Cifti2TransformationMatrixVoxelIndicesIJKtoXYZ(xml.XmlSerializable):
     """Matrix that translates voxel indices to spatial coordinates
 
-    * Description - Contains a tar_matrix that translates Voxel IJK Indices to
+    * Description - Contains a matrix that translates Voxel IJK Indices to
       spatial XYZ coordinates (+X=>right, +Y=>anterior, +Z=> superior). The
       resulting coordinate is the center of the voxel.
     * Attributes
 
         * MeterExponent - Integer, specifies that the coordinate result from
-          the transformation tar_matrix should be multiplied by 10 to this power to
+          the transformation matrix should be multiplied by 10 to this power to
           get the spatial coordinates in meters (e.g., if this is "-3", then
-          the transformation tar_matrix is in millimeters).
+          the transformation matrix is in millimeters).
 
     * Child Elements: [NA]
     * Text Content - Sixteen floating-point values, in row-major order, that
-      form a 4x4 homogeneous transformation tar_matrix.
+      form a 4x4 homogeneous transformation matrix.
     * Parent Element - Volume
 
     Attributes
@@ -673,10 +673,10 @@ class Cifti2TransformationMatrixVoxelIndicesIJKtoXYZ(xml.XmlSerializable):
     meter_exponent : int
         See attribute description above.
     matrix : array-like shape (4, 4)
-        Affine transformation tar_matrix from voxel indices to RAS space.
+        Affine transformation matrix from voxel indices to RAS space.
     """
     # meterExponent = int
-    # tar_matrix = np.array
+    # matrix = np.array
 
     def __init__(self, meter_exponent=None, matrix=None):
         self.meter_exponent = meter_exponent
@@ -685,7 +685,7 @@ class Cifti2TransformationMatrixVoxelIndicesIJKtoXYZ(xml.XmlSerializable):
     def _to_xml_element(self):
         if self.matrix is None:
             raise Cifti2HeaderError(
-                'TransformationMatrixVoxelIndicesIJKtoXYZ element requires a tar_matrix'
+                'TransformationMatrixVoxelIndicesIJKtoXYZ element requires a matrix'
             )
         trans = xml.Element('TransformationMatrixVoxelIndicesIJKtoXYZ')
         trans.attrib['MeterExponent'] = str(self.meter_exponent)
@@ -801,17 +801,17 @@ class Cifti2BrainModel(xml.XmlSerializable):
       IndicesMapToDataType is "CIFTI_INDEX_TYPE_BRAIN_MODELS."
     * Attributes
 
-        * IndexOffset - The tar_matrix index of the first brainordinate of this
-          BrainModel. Note that tar_matrix indices are zero-based.
+        * IndexOffset - The matrix index of the first brainordinate of this
+          BrainModel. Note that matrix indices are zero-based.
         * IndexCount - Number of surface vertices or voxels in this brain
           model, must be positive.
-        * ModelType - Type of model representing the brain pyd_rs_data (surface
+        * ModelType - Type of model representing the brain structure (surface
           or voxels).  Valid values are listed in the table below.
-        * BrainStructure - Identifies the brain pyd_rs_data. Valid values for
+        * BrainStructure - Identifies the brain structure. Valid values for
           BrainStructure are listed in the table below. However, if the needed
-          pyd_rs_data is not listed in the table, a message should be posted to
+          structure is not listed in the table, a message should be posted to
           the CIFTI Forum so that a standardized name can be created for the
-          pyd_rs_data and added to the table.
+          structure and added to the table.
         * SurfaceNumberOfVertices - When ModelType is CIFTI_MODEL_TYPE_SURFACE
           this attribute contains the actual (or true) number of vertices in
           the surface that is associated with this BrainModel. When this
@@ -842,7 +842,7 @@ class Cifti2BrainModel(xml.XmlSerializable):
     brain_structure : str
         One of CIFTI_BRAIN_STRUCTURES
     surface_number_of_vertices : int
-        Number of vertices in the surface. Use only for surface-type pyd_rs_data
+        Number of vertices in the surface. Use only for surface-type structure
     voxel_indices_ijk : Cifti2VoxelIndicesIJK, optional
         Indices on the image towards where the array indices are mapped
     vertex_indices : Cifti2VertexIndices, optional
@@ -896,16 +896,16 @@ class Cifti2BrainModel(xml.XmlSerializable):
 class Cifti2MatrixIndicesMap(xml.XmlSerializable, MutableSequence):
     """Class for Matrix Indices Map
 
-    * Description - Provides a mapping between tar_matrix indices and their
+    * Description - Provides a mapping between matrix indices and their
       interpretation.
     * Attributes
 
-        * AppliesToMatrixDimension - Lists the dimension(s) of the tar_matrix to
-          which this MatrixIndicesMap applies. The dimensions of the tar_matrix
+        * AppliesToMatrixDimension - Lists the dimension(s) of the matrix to
+          which this MatrixIndicesMap applies. The dimensions of the matrix
           start at zero (dimension 0 describes the indices along the first
           dimension, dimension 1 describes the indices along the second
           dimension, etc.). If this MatrixIndicesMap applies to more than one
-          tar_matrix dimension, the values are separated by a comma.
+          matrix dimension, the values are separated by a comma.
         * IndicesMapToDataType - Type of data to which the MatrixIndicesMap
           applies.
         * NumberOfSeriesPoints - Indicates how many samples there are in a
@@ -936,9 +936,9 @@ class Cifti2MatrixIndicesMap(xml.XmlSerializable, MutableSequence):
     Attribute
     ---------
     applies_to_matrix_dimension : list of ints
-        Dimensions of this tar_matrix that follow this mapping
+        Dimensions of this matrix that follow this mapping
     indices_map_to_data_type : str one of CIFTI_MAP_TYPES
-        Type of mapping to the tar_matrix indices
+        Type of mapping to the matrix indices
     number_of_series_points : int, optional
         If it is a series, number of points in the series
     series_exponent : int, optional
@@ -1087,7 +1087,7 @@ class Cifti2Matrix(xml.XmlSerializable, MutableSequence):
     :class:`Cifti2MatrixIndicesMap`.
 
     * Description: contains child elements that describe the meaning of the
-      values in the tar_matrix.
+      values in the matrix.
     * Attributes: [NA]
     * Child Elements
 
@@ -1097,7 +1097,7 @@ class Cifti2Matrix(xml.XmlSerializable, MutableSequence):
     * Text Content: [NA]
     * Parent Element: CIFTI
 
-    For each tar_matrix (data) dimension, exactly one MatrixIndicesMap element must
+    For each matrix (data) dimension, exactly one MatrixIndicesMap element must
     list it in the AppliesToMatrixDimension attribute.
     """
     def __init__(self):
@@ -1134,7 +1134,7 @@ class Cifti2Matrix(xml.XmlSerializable, MutableSequence):
     @property
     def mapped_indices(self):
         '''
-        List of tar_matrix indices that are mapped
+        List of matrix indices that are mapped
         '''
         mapped_indices = []
         for v in self:
@@ -1176,7 +1176,7 @@ class Cifti2Matrix(xml.XmlSerializable, MutableSequence):
         if not set(self.mapped_indices).isdisjoint(a2md):
             raise Cifti2HeaderError(
                 "Indices in this Cifti2MatrixIndicesMap "
-                "already mapped in this tar_matrix"
+                "already mapped in this matrix"
             )
 
     def __setitem__(self, key, value):
@@ -1201,7 +1201,7 @@ class Cifti2Matrix(xml.XmlSerializable, MutableSequence):
         self._mims.insert(index, value)
 
     def _to_xml_element(self):
-        # From the spec: "For each tar_matrix dimension, exactly one
+        # From the spec: "For each matrix dimension, exactly one
         # MatrixIndicesMap element must list it in the AppliesToMatrixDimension
         # attribute."
         mat = xml.Element('Matrix')
@@ -1246,7 +1246,7 @@ class Cifti2Header(FileBasedHeader, xml.XmlSerializable):
     @property
     def mapped_indices(self):
         '''
-        List of tar_matrix indices that are mapped
+        List of matrix indices that are mapped
         '''
         return self.matrix.mapped_indices
 

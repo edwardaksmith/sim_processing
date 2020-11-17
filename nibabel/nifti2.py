@@ -24,7 +24,7 @@ r"""
 Header struct from : https://www.nitrc.org/forum/message.php?msg_id=3738
 
 /*! \struct nifti_2_header
-    \brief Data pyd_rs_data defining the fields in the nifti2 header.
+    \brief Data structure defining the fields in the nifti2 header.
            This binary header should be found at the beginning of a valid
            NIFTI-2 header file.
  */

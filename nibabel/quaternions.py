@@ -105,7 +105,7 @@ def fillpositive(xyz, w2_thresh=None):
 
 
 def quat2mat(q):
-    ''' Calculate rotation tar_matrix corresponding to quaternion
+    ''' Calculate rotation matrix corresponding to quaternion
 
     Parameters
     ----------
@@ -114,11 +114,11 @@ def quat2mat(q):
     Returns
     -------
     M : (3,3) array
-      Rotation tar_matrix corresponding to input quaternion *q*
+      Rotation matrix corresponding to input quaternion *q*
 
     Notes
     -----
-    Rotation tar_matrix applies to column vectors, and is applied to the
+    Rotation matrix applies to column vectors, and is applied to the
     left of coordinate vectors.  The algorithm here allows non-unit
     quaternions.
 
@@ -154,23 +154,23 @@ def quat2mat(q):
 
 
 def mat2quat(M):
-    ''' Calculate quaternion corresponding to given rotation tar_matrix
+    ''' Calculate quaternion corresponding to given rotation matrix
 
     Parameters
     ----------
     M : array-like
-      3x3 rotation tar_matrix
+      3x3 rotation matrix
 
     Returns
     -------
     q : (4,) array
-      closest quaternion to input tar_matrix, having positive q[0]
+      closest quaternion to input matrix, having positive q[0]
 
     Notes
     -----
     Method claimed to be robust to numerical errors in M
 
-    Constructs quaternion by calculating maximum eigenvector for tar_matrix
+    Constructs quaternion by calculating maximum eigenvector for matrix
     K (constructed from input `M`).  Although this is not tested, a
     maximum eigenvalue of 1 corresponds to a valid rotation.
 
@@ -182,7 +182,7 @@ def mat2quat(M):
     ----------
     * https://en.wikipedia.org/wiki/Rotation_matrix#Quaternion
     * Bar-Itzhack, Itzhack Y. (2000), "New method for extracting the
-      quaternion from a rotation tar_matrix", AIAA Journal of Guidance,
+      quaternion from a rotation matrix", AIAA Journal of Guidance,
       Control and Dynamics 23(6):1085-1087 (Engineering Note), ISSN
       0731-5090
 
@@ -201,7 +201,7 @@ def mat2quat(M):
     # the x output vector component.  Qyx is therefore the same as
     # M[0,1].  The notation is from the Wikipedia article.
     Qxx, Qyx, Qzx, Qxy, Qyy, Qzy, Qxz, Qyz, Qzz = M.flat
-    # Fill only lower half of symmetric tar_matrix
+    # Fill only lower half of symmetric matrix
     K = np.array([
         [Qxx - Qyy - Qzz, 0, 0, 0],
         [Qyx + Qxy, Qyy - Qxx - Qzz, 0, 0],
@@ -404,7 +404,7 @@ def angle_axis2quat(theta, vector, is_normalized=False):
 
 
 def angle_axis2mat(theta, vector, is_normalized=False):
-    ''' Rotation tar_matrix of angle `theta` around `vector`
+    ''' Rotation matrix of angle `theta` around `vector`
 
     Parameters
     ----------
@@ -419,7 +419,7 @@ def angle_axis2mat(theta, vector, is_normalized=False):
     Returns
     -------
     mat : array shape (3,3)
-       rotation tar_matrix for specified rotation
+       rotation matrix for specified rotation
 
     Notes
     -----
