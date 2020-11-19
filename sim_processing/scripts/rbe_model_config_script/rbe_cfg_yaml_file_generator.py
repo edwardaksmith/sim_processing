@@ -116,7 +116,7 @@ dict_rbe_cfg['mcnamara']['McNa15']['summary'] = 'NEED TO FILL THESE IN AT SOME P
 
 #SAVING
 
-fp_save_dict = '/Users/edwardaksmith/PycharmProjects/sim_processing/sim_processing/data/rbe_model_data/RBE_config.yaml'
+fp_save_dict = 'RBE_config.yaml'
 
 rbe.save_yaml_file(dict_rbe_cfg, fp_save_dict)
 
