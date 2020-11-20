@@ -99,9 +99,10 @@ def create_mask(base_map, masking_value=1):
 
 def resamp_mat_2_mat(ref_matrix, tar_matrix):
     """
-    Input:    ref_matrix = matrix to match, tar_matrix = matrix to alter
-    Output:   mask = int mask
-    Summary:  Creates a mask from a base map with a predefined masking value of 1%
+    Input:      ref_matrix = matrix to match
+                tar_matrix = matrix to alter
+    Output:     matrix_res = tar_matrix resized to dimensions of ref_matrix
+    Summary:    Creates new matrix where tar_matrix is resized to the dimensions of ref_matrix
     """
     matrix_res = copy.deepcopy(tar_matrix)
 
