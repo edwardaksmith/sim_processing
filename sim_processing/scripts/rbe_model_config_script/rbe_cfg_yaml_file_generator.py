@@ -44,7 +44,7 @@ dict_rbe_cfg['mm_model']['EAKS19']['dam_yield'] = \
 dict_rbe_cfg['mm_model']['EAKS19']['summary'] = 'NEED TO FILL THESE IN AT SOME POINT'
 
 ########
-# YQ19 #
+# YQ20 #
 ########
 ################
 # Damage Yield #

@@ -104,6 +104,7 @@ def resamp_mat_2_mat(ref_matrix, tar_matrix):
     Output:     matrix_res = tar_matrix resized to dimensions of ref_matrix
     Summary:    Creates new matrix where tar_matrix is resized to the dimensions of ref_matrix
     """
+
     matrix_res = copy.deepcopy(tar_matrix)
 
     matrix_res = matrix_res.resample(ref_matrix.row_vector,

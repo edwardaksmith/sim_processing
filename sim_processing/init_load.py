@@ -768,7 +768,7 @@ def create_als_field_let(fp_field, list_let_num, list_let_den):
     Summary:    Creates LET for a single field for a given let scoring method (via the list_letd)
     """
 
-    als_let_num = np.nan_to_numn(create_als_field_map(fp_field, list_let_num))
+    als_let_num = np.nan_to_num(create_als_field_map(fp_field, list_let_num))
     als_let_den = np.nan_to_num(create_als_field_map(fp_field, list_let_den))
 
     als_let_field = np.nan_to_num(als_let_num / als_let_den)
